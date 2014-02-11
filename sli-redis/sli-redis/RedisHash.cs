@@ -17,7 +17,7 @@ namespace sli_redis
             Dictionary<string, string> result = new Dictionary<string, string>();
 
             _client.SendCommand("HGETALL {0}\r\n", key);
-            _client.ReadData<Dictionary<string, string>>((i, field) =>
+            _client.ReadData((i, field) =>
             {
                 string str = Encoding.UTF8.GetString(_client.ReadLine());
                 if (i % 2 == 0)
@@ -36,6 +36,11 @@ namespace sli_redis
         public void Set(string key, string field, string value)
         {
             _client.SendCommand("HSET {0} {1}\r\n", key, field + " " + value);
+        }
+
+        public void SetIfNotExist(string key, string field, string value)
+        {
+            _client.SendCommand("HSETNX {0} {1}\r\n", key, field + " " + value);
         }
     }
 }
