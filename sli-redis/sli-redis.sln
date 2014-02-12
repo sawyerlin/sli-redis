@@ -5,7 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sli-redis", "sli-redis\sli-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sli-redis.Test", "sli-redis.Test\sli-redis.Test.csproj", "{97AC8C42-66FD-461E-ADD8-FA2651D84171}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Packager", "NuGet.Packager\NuGet.Packager.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{ACABC657-4DF7-45F1-BD65-DC75215DF01E}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\NuGet.config = NuGet\NuGet.config
+		NuGet\NuGet.exe = NuGet\NuGet.exe
+		NuGet\sli-redis.nuspec = NuGet\sli-redis.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +26,6 @@ Global
 		{97AC8C42-66FD-461E-ADD8-FA2651D84171}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97AC8C42-66FD-461E-ADD8-FA2651D84171}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97AC8C42-66FD-461E-ADD8-FA2651D84171}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
