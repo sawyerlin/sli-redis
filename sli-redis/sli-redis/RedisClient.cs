@@ -57,7 +57,7 @@ namespace sli_redis
             return true;
         }
 
-        internal bool SendCommand(string cmd, params object[] args)
+        internal string SendCommand(string cmd, params object[] args)
         {
             if (ConnectSocket())
             {
@@ -67,47 +67,46 @@ namespace sli_redis
                 {
                     _socket.Send(bytes);
                     _socket.Send(new[] { (byte)'\r', (byte)'\n' });
+                    return Encoding.UTF8.GetString(ReadLine());
                 }
                 catch (Exception)
                 {
-                    return false;
+                    return string.Empty;
                 }
             }
-            return true;
+            return string.Empty;
         }
 
-        internal void ReadData(Func<int, string, string> readFunction, object param)
+        internal void ReadData(Action<string> readFunction, string str)
         {
-            string str = Encoding.UTF8.GetString(ReadLine());
             if (str == "$-1") // Null
             {
-                readFunction(-1, string.Empty);
+                readFunction(string.Empty);
                 return;
             }
 
-            while (str[0] != '*' && str[0] != '$')
-            {
-                str = Encoding.UTF8.GetString(ReadLine());
-            }
             if (str.StartsWith("*"))
             {
                 int count;
                 if (int.TryParse(str.Substring(1), out count))
                 {
-                    string field = string.Empty;
                     for (int i = 0; i < count; i++)
                     {
                         str = Encoding.UTF8.GetString(ReadLine());
-                        if (str.StartsWith("$"))
-                        {
-                            field = readFunction(i, field);
-                        }
+                        if (str[0] == '$')
+                            str = Encoding.UTF8.GetString(ReadLine());
+                        readFunction(str);
                     }
                 }
             }
-            else if (str.StartsWith("$"))
+            else if (str[0] == ':')
             {
-                readFunction(0, string.Empty);
+                readFunction(str.Substring(1));
+            }
+            else if (str[0] == '$')
+            {
+                str = Encoding.UTF8.GetString(ReadLine());
+                readFunction(str);
             }
         }
 

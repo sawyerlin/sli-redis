@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace sli_redis
 {
@@ -16,19 +15,20 @@ namespace sli_redis
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
-            _client.SendCommand("HGETALL {0}\r\n", key);
-            _client.ReadData((i, field) =>
-            {
-                string str = Encoding.UTF8.GetString(_client.ReadLine());
-                if (i % 2 == 0)
-                {
-                    field = str;
-                }
-                else
-                    result.Add(field, str);
+            string returnedValue = _client.SendCommand("HGETALL {0}\r\n", key);
 
-                return field;
-            }, result);
+            int index = 0;
+            string newKey = string.Empty;
+
+            _client.ReadData(value =>
+            {
+                if (index % 2 == 0)
+                    newKey = value;
+                else
+                    result.Add(newKey, value);
+
+                index++;
+            }, returnedValue);
 
             return result;
         }

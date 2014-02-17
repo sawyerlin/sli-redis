@@ -11,22 +11,31 @@ namespace sli_redis.Test
 
             // Hash
             //client.Hash.Set("test", "a", "b");
-            //var result = client.Key.GetAll("*");
+            //client.Hash.SetIfNotExist("test", "a", "c");
+            //client.Hash.SetIfNotExist("test", "b", "c");
+            //var test = client.Hash.GetAll("test");
+            //Console.WriteLine(test);
+            //client.Hash.Set("test1", "a", "b");
+
+            // Key
+            //var test = client.Key.GetAll("*");
+            //Console.WriteLine(test);
 
             // List
-            client.List.EnQueue("mylist", new List<string> { "Test1", "Test2", "Test3" });
-            client.List.EnQueue("mylist", "Test4");
-            for (int i = 0; i < 10; i++)
-            {
-                var result = client.List.DeQueue("mylist");
-                if (result == null)
-                    break;
+            //client.List.EnQueue("mylist", new List<string> { "Test1", "Test2", "Test3" });
+            //client.List.EnQueue("mylist", "Test4");
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var result = client.List.DeQueue("mylist");
+            //    if (result == null)
+            //        break;
 
-                Console.WriteLine(result);
-            }
-
-
-            Console.Read();
+            //    Console.WriteLine(result);
+            //}
+            //string length = client.List.GetLength("mylist");
+            //List<string> result = client.List.GetAll("mylist");
+            //Console.WriteLine(length);
+            //Console.WriteLine(result);
         }
     }
 }

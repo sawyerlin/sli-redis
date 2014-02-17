@@ -16,14 +16,8 @@ namespace sli_redis
         {
             List<string> result = new List<string>();
 
-            _client.SendCommand("KEYS {0}\r\n", pattern);
-            _client.ReadData((i, field) =>
-            {
-                string str = Encoding.UTF8.GetString(_client.ReadLine());
-                result.Add(str);
-
-                return str;
-            }, result);
+            string returnedValue = _client.SendCommand("KEYS {0}\r\n", pattern);
+            _client.ReadData(result.Add, returnedValue);
 
             return result;
         }
