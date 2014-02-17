@@ -13,8 +13,9 @@ namespace sli_redis
         private Socket _socket;
         private BufferedStream _stream;
 
-        public RedisHash Hash { get; private set; }
         public RedisKey Key { get; private set; }
+        public RedisHash Hash { get; private set; }
+        public RedisList List { get; private set; }
 
         // Use "redis-cli -h ipaddress info | grep ^db" to find your key id
         public RedisClient(string host, int port = 6379, int db = 0)
@@ -26,8 +27,9 @@ namespace sli_redis
                 NoDelay = true,
                 SendTimeout = 10000,
             };
-            Hash = new RedisHash(this);
             Key = new RedisKey(this);
+            Hash = new RedisHash(this);
+            List = new RedisList(this);
             SendCommand("SELECT {0}\r\n", db);
         }
 
@@ -77,7 +79,13 @@ namespace sli_redis
         internal void ReadData(Func<int, string, string> readFunction, object param)
         {
             string str = Encoding.UTF8.GetString(ReadLine());
-            while (str[0] != '*')
+            if (str == "$-1") // Null
+            {
+                readFunction(-1, string.Empty);
+                return;
+            }
+
+            while (str[0] != '*' && str[0] != '$')
             {
                 str = Encoding.UTF8.GetString(ReadLine());
             }
@@ -96,6 +104,10 @@ namespace sli_redis
                         }
                     }
                 }
+            }
+            else if (str.StartsWith("$"))
+            {
+                readFunction(0, string.Empty);
             }
         }
 
