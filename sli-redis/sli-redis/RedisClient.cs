@@ -63,16 +63,9 @@ namespace sli_redis
             {
                 string command = args != null && args.Length > 0 ? string.Format(cmd, args) : cmd;
                 byte[] bytes = Encoding.UTF8.GetBytes(command);
-                try
-                {
-                    _socket.Send(bytes);
-                    _socket.Send(new[] { (byte)'\r', (byte)'\n' });
-                    return Encoding.UTF8.GetString(ReadLine());
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
+                _socket.Send(bytes);
+                _socket.Send(new[] { (byte)'\r', (byte)'\n' });
+                return Encoding.UTF8.GetString(ReadLine());
             }
             return string.Empty;
         }

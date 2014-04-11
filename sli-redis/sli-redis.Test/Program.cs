@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace sli_redis.Test
 {
@@ -22,6 +23,13 @@ namespace sli_redis.Test
             //Console.WriteLine(test);
 
             // List
+            int index = 0;
+            while (true)
+            {
+                client.List.EnQueue("mylist", "Test " + index);
+                Thread.Sleep(1000);
+                index++;
+            }
             //client.List.EnQueue("mylist", new List<string> { "Test1", "Test2", "Test3" });
             //client.List.EnQueue("mylist", "Test4");
             //for (int i = 0; i < 10; i++)
